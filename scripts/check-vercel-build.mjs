@@ -57,3 +57,5 @@ for (const slug of ["beauty", "black-dress", "first-doll", "puppy"]) {
 for (const file of ["west-marine-v2.png", "pacsun-v3.png", "ann-taylor.png"]) {
   await access(resolve(output, "static", "images", "customers", file));
 }
+
+await access(resolve(output, "static", "images", "american-girl", "kit-product-page.webp"));
