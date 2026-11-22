@@ -1,0 +1,18 @@
+[
+  {
+    "path": "public/images/american-girl/beauty-current.png",
+    "sha256": "a558103418aa2095cf1075e6d6648d2a9d7caa513bdca1b1bfdfbed97389e79f"
+  },
+  {
+    "path": "public/images/american-girl/black-dress-current.png",
+    "sha256": "40b483c05966ee25be4aeec6518e06dcbe19a29fa498401ae95d7932d7f92874"
+  },
+  {
+    "path": "public/images/american-girl/first-doll-current.png",
+    "sha256": "7dab79b4e391892fd3766274d642298ac728fa449514ef2ec0c26a94cd977b1b"
+  },
+  {
+    "path": "public/images/american-girl/puppy-current.png",
+    "sha256": "2f16d8bd05162ef148c2a95282d220e728ab3bd5ca143222c29687e01df2e2ac"
+  }
+]
