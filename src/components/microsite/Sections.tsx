@@ -140,7 +140,7 @@ export function Hero({ setActive }: { setActive: (index: number) => void }) {
         <div className="relative z-10">
           <span className="inline-flex items-center gap-2 rounded-full border border-sky/30 bg-navy/40 px-4 py-1.5 text-xs font-bold text-sky">
             <Cloud className="w-5" /> Cimulate <span aria-hidden="true">|</span>
-            <span className="font-medium">A Salesforce Company</span>
+            <span className="font-medium">Acquired by Salesforce</span>
           </span>
           <h1 className="mt-6 text-5xl font-semibold leading-[1.04] md:text-7xl">
             What if American Girl understood every shopper’s{" "}
@@ -224,7 +224,17 @@ function QueryTabs({ active, setActive }: { active: number; setActive: (i: numbe
   );
 }
 
-export function Lightbox({ src, onClose }: { src: string | null; onClose: () => void }) {
+export function Lightbox({
+  src,
+  onClose,
+  label = "Enlarged search screenshot",
+  alt = "Original full-size search screenshot",
+}: {
+  src: string | null;
+  onClose: () => void;
+  label?: string;
+  alt?: string;
+}) {
   const closeRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (!src) return;
@@ -251,13 +261,13 @@ export function Lightbox({ src, onClose }: { src: string | null; onClose: () => 
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Enlarged search screenshot"
+      aria-label={label}
       onClick={onClose}
       className="fixed inset-0 z-50 overflow-auto bg-navy/95 p-4 md:p-10"
     >
       <img
         src={src}
-        alt="Original full-size search screenshot"
+        alt={alt}
         className="mx-auto block h-auto min-w-[720px] max-w-none rounded-lg md:max-w-full"
         onClick={(e) => e.stopPropagation()}
       />
@@ -293,11 +303,13 @@ function Screenshot({
   onZoom,
   label,
   alt,
+  illustrative = false,
 }: {
   src: string;
   onZoom: () => void;
   label: string;
   alt: string;
+  illustrative?: boolean;
 }) {
   return (
     <Button
@@ -309,7 +321,15 @@ function Screenshot({
         <span className="h-2.5 w-2.5 rounded-full bg-border" />
         <span className="h-2.5 w-2.5 rounded-full bg-border" />
         <span className="h-2.5 w-2.5 rounded-full bg-border" />
-        <span className="ml-3 text-xs text-muted-foreground">{label}</span>
+        <span
+          className={
+            illustrative
+              ? "ml-2 text-sm font-bold text-primary"
+              : "ml-3 text-xs text-muted-foreground"
+          }
+        >
+          {label}
+        </span>
       </div>
       <EvidenceImage
         src={src}
@@ -398,12 +418,16 @@ export function Reimagined({
             <span className="text-gradient">Understands What Shoppers Mean.</span>
           </h2>
           <p className="mt-6 text-lg text-muted-foreground">
-            Cimulate combines a commerce-specific language model with AI-powered visual product
-            understanding to connect natural shopping language with relevant products.
+            Cimulate combines a commerce-focused Small Language Model (SLM) built for American Girl
+            with computer vision to connect natural shopping language with relevant products.
           </p>
         </div>
         <div className="reveal mt-12">
           <QueryTabs active={active} setActive={setActive} />
+          <p className="mt-5 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+            Conceptual results curated to demonstrate how Cimulate could improve American Girl
+            product discovery. Not live Cimulate-powered American Girl results.
+          </p>
         </div>
         <div key={q.id} className="animate-in fade-in slide-in-from-bottom-3 mt-10 duration-500">
           <div className="flex flex-col gap-5 rounded-2xl bg-navy p-6 text-navy-foreground shadow-soft md:flex-row md:items-center md:justify-between">
@@ -414,7 +438,8 @@ export function Reimagined({
           <div className="mt-8 grid items-start gap-8 lg:grid-cols-[1fr_320px]">
             <Screenshot
               src={q.proposed}
-              label="Illustrative Cimulate-powered experience"
+              label="Illustrative Cimulate-powered search experience"
+              illustrative
               alt={q.resultsAlt}
               onZoom={() => setZoom(q.proposed)}
             />
@@ -551,7 +576,7 @@ export function Closing() {
             Let your shoppers dream it. Let Cimulate help them find it.
           </p>
           <p className="mt-10 text-sm font-semibold text-navy-muted">
-            Cimulate <span aria-hidden="true">|</span> A Salesforce Company
+            Cimulate <span aria-hidden="true">|</span> Acquired by Salesforce
           </p>
         </div>
         <div className="relative mx-auto w-56 md:w-64">

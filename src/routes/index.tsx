@@ -11,6 +11,8 @@ import {
 } from "@/components/microsite/Sections";
 import { Understanding } from "@/components/microsite/Understanding";
 
+import { ShopperAgent } from "@/components/microsite/ShopperAgent";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -18,7 +20,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "An executive concept showing how Cimulate, a Salesforce company, could transform product discovery for American Girl.",
+          "An executive concept showing how Cimulate, acquired by Salesforce, could transform product discovery for American Girl.",
       },
       { property: "og:title", content: "American Girl × Cimulate" },
       {
@@ -42,6 +44,7 @@ function Index() {
       <Reimagined active={active} setActive={setActive} />
       <Understanding />
       <Proof />
+      <ShopperAgent />
       <Business />
       <Closing />
     </main>

@@ -14,7 +14,7 @@ export const americanGirl = {
       ],
       annotation: "Recognizes the story behind the words.",
       resultSummary:
-        "Cimulate’s commerce-specific language model understands that “Beauty and the Beast” refers to the Disney story and its characters. Computer vision enriches that understanding by extracting visual product attributes directly from catalog imagery, helping connect shoppers to relevant Belle dolls, outfits, and themed accessories.",
+        "Cimulate’s American Girl-specific SLM understands the Disney story and characters referenced by “Beauty and the Beast.” Computer vision enriches American Girl’s catalog by extracting visual characteristics from product imagery, helping shoppers discover relevant Belle dolls, outfits, and themed accessories.",
       resultsAlt: "Belle dolls, Disney Princess dresses, and Beauty and the Beast accessories.",
     },
     {
@@ -25,7 +25,7 @@ export const americanGirl = {
       intent: ["Product type: Dress", "Color: Black", "Doll and coordinated looks"],
       annotation: "Understands the product — and sees its attributes.",
       resultSummary:
-        "Cimulate understands that the shopper is looking for a black dress. Computer vision technology extracts visual attributes such as color and style from product imagery, enriching catalog data so relevant dresses and coordinated looks can be discovered even when written product descriptions are incomplete.",
+        "Cimulate’s model built for American Girl understands that the shopper is looking for a black dress. Computer vision extracts attributes such as color directly from product imagery, helping surface relevant dresses even when the product feed’s written descriptions are incomplete.",
       resultsAlt: "Six American Girl × J.Crew black dresses and coordinated outfits.",
     },
     {
@@ -36,7 +36,7 @@ export const americanGirl = {
       intent: ["Gift for an eight-year-old", "Age-appropriate doll"],
       annotation: "Understands who the gift is for.",
       resultSummary:
-        "Cimulate’s commerce-specific language model recognizes a gifting mission, the intended recipient, and the age context, bringing age-appropriate dolls into focus.",
+        "A commerce-focused SLM tailored to American Girl’s catalog recognizes a gift for an eight-year-old and understands that the shopper wants an age-appropriate doll. It prioritizes dolls over books or journals that mention the age.",
       resultsAlt: "Felicity, Samantha, Molly, Addy, Josefina, Kaya, Kirsten, and Kit dolls.",
     },
     {
@@ -45,13 +45,13 @@ export const americanGirl = {
       observation:
         "While puppy-related products appear, the results also include dolls and outfits. The shopper is looking for a puppy companion for their doll — not a new doll.",
       intent: [
-        "Product: Puppy or pet companion",
+        "Product: Doll-sized puppy",
         "Intended for: An American Girl doll",
-        "Related accessories: Pet beds, leashes, and playsets",
+        "Context: A companion for doll play",
       ],
       annotation: "Understands relationships between products.",
       resultSummary:
-        "Cimulate’s commerce-specific language model understands that the shopper wants a puppy companion for their doll — not another doll. By recognizing the relationship between the products and the shopper’s intent, Cimulate prioritizes relevant doll-sized pets, with complementary accessories available for further discovery.",
+        "Cimulate’s American Girl-specific SLM understands that the shopper is looking for a puppy to accompany their doll — not another doll. It prioritizes relevant doll-sized puppies, while keeping complementary pet accessories available lower in the search results for additional discovery.",
       resultsAlt: "Doll-sized puppies and companion pet play accessories.",
     },
   ].map((query) => ({

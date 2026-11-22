@@ -37,7 +37,7 @@ describe("American Girl search comparison", () => {
       );
       expect(today.getByRole("img")).toHaveAttribute("src", query.screenshot);
       expect(proposed.getByRole("img")).toHaveAttribute("src", query.proposed);
-      expect(proposed.getByText("Illustrative Cimulate-powered experience")).toBeVisible();
+      expect(proposed.getByText("Illustrative Cimulate-powered search experience")).toBeVisible();
     });
 
     fireEvent.change(screen.getByRole("combobox"), { target: { value: "Black dress" } });

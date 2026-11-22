@@ -1,96 +1,89 @@
-import { Brain, Eye, Footprints, LineChart } from "lucide-react";
+import { ArrowDown, Brain, Eye, LineChart } from "lucide-react";
 
 const capabilities = [
   {
     icon: Brain,
-    title: "Commerce-Specific Small Language Model (SLM)",
+    title: "American Girl-Specific SLM + Simulated Shopping Journeys",
     paragraphs: [
-      "Instead of relying solely on predefined relevance signals and manually weighted algorithms, Cimulate uses a commerce-specific language model trained to understand shopping intent. It learns how products relate to real shopping needs, occasions, and missions.",
-      "For American Girl, that means understanding that “doll for my 8 year old” is a gifting mission, not simply a search for products mentioning dolls or eight-year-olds.",
+      "Cimulate builds a commerce-specific Small Language Model (SLM) for American Girl, using its catalog and simulated shopping journeys to learn how shoppers discover, compare, and choose products.",
+      "The model understands intent from the start, whether someone wants a first doll, a favorite character, or a gift for an eight-year-old. Simulated journeys help establish relevance for new products and when shopper history is limited.",
+      "Merchandisers can spend less time defining individual queries and adjusting ranking weights.",
     ],
   },
   {
     icon: Eye,
-    title: "Computer Vision",
+    title: "Computer Vision + Query Rewriting",
     paragraphs: [
-      "Cimulate uses computer vision technology to extract product attributes directly from catalog imagery, including colors, patterns, materials, and visual styles.",
-      "This enriches the product catalog beyond what is explicitly written in the feed, giving the model a deeper understanding of each product. For example, a search for “black dress” can connect to visually relevant products even when the catalog’s written attributes are incomplete.",
+      "Computer vision extracts colors, patterns, and styles directly from product imagery, enriching catalog descriptions.",
+      "Query rewriting helps interpret unfamiliar terms, cultural references, and emerging trends. The SLM can consult external large language models in real time to translate a phrase into product concepts.",
     ],
-  },
-  {
-    icon: Footprints,
-    title: "Simulated Shopping Journeys",
-    paragraphs: [
-      "Cimulate generates simulated shopping journeys to help the model learn how shoppers might discover, compare, and purchase products.",
-      "Rather than relying exclusively on historical clicks and purchases, these simulated interactions help establish product relevance, including for new products that haven’t accumulated significant shopper behavior.",
-      "This is especially relevant when American Girl introduces new dolls, collections, or seasonal merchandise.",
-    ],
+    example: true,
   },
   {
     icon: LineChart,
-    title: "Real Shopper Behavior & Conversion Optimization",
+    title: "Real Shopper Behavior + Conversion Optimization",
     paragraphs: [
-      "Cimulate’s commerce-specific SLM establishes product relevance by understanding shopper intent from the start — without needing months of historical behavioral data.",
-      "As shoppers interact with the storefront, behavioral signals such as clicks, add-to-carts, and purchases help the model learn which relevant products are most likely to convert and how to prioritize them in the results.",
-      "This allows product ranking to evolve with actual shopper preferences and purchasing behavior, without relying on constant manual adjustments to ranking rules.",
+      "Cimulate’s commerce-specific model establishes which products are relevant. Clicks, add-to-carts, and purchases then help the system learn which relevant products are most likely to convert.",
+      "The system uses those signals to order relevant products, reducing the need for manual ranking adjustments.",
     ],
   },
 ];
 
+function QueryRewriteExample() {
+  return (
+    <div className="mt-5 rounded-xl border bg-secondary p-4">
+      <p className="eyebrow text-primary">Illustrative query rewrite</p>
+      <dl className="mt-3 space-y-2 text-sm">
+        <div>
+          <dt className="text-xs text-muted-foreground">Shopper searches</dt>
+          <dd className="font-semibold">“Labubu outfit for my doll”</dd>
+        </div>
+        <div>
+          <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <ArrowDown className="size-3.5 text-primary" aria-hidden="true" /> Query interpretation
+          </dt>
+          <dd className="font-semibold">“Monster-inspired doll clothing”</dd>
+        </div>
+      </dl>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+        If American Girl carries items with those characteristics, the rewrite can help shoppers
+        find them without manually adding synonyms for each new trend.
+      </p>
+    </div>
+  );
+}
+
 export function Understanding() {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-24">
+    <section id="technology" className="mx-auto max-w-7xl px-6 py-24">
       <div className="reveal max-w-4xl">
         <h2 className="text-4xl font-semibold md:text-5xl">
           Not Just Product Matching. <span className="text-gradient">Shopper Understanding.</span>
         </h2>
-        <div className="mt-6 max-w-3xl space-y-4 text-lg leading-relaxed text-muted-foreground">
-          <p>
-            Your Shopify storefront powers your ecommerce experience. Cimulate enhances the product
-            discovery behind it with a commerce-specific Small Language Model (SLM) built to
-            understand what shoppers are actually trying to accomplish.
-          </p>
-          <p>
-            Rather than relying primarily on predefined ranking signals and algorithmic weighting,
-            Cimulate leads with shopper intent — understanding the purpose behind a search and
-            connecting customers to relevant products. Combined with computer vision, simulated
-            shopping journeys, and real shopper behavior, this creates a more intelligent,
-            continuously evolving discovery experience.
-          </p>
-        </div>
       </div>
-      <div className="reveal mt-10 grid gap-4 md:grid-cols-2">
-        {capabilities.map(({ icon: Icon, title, paragraphs }) => (
-          <article key={title} className="rounded-2xl border bg-card p-6 shadow-soft md:p-8">
+      <div className="reveal mt-10 grid gap-4 lg:grid-cols-3">
+        {capabilities.map(({ icon: Icon, title, paragraphs, example }) => (
+          <article key={title} className="rounded-2xl border bg-card p-6 shadow-soft xl:p-7">
             <Icon className="size-6 text-primary" aria-hidden="true" />
-            <h3 className="mt-5 text-xl font-semibold">{title}</h3>
+            <h3 className="mt-5 text-lg font-semibold">{title}</h3>
             <div className="mt-4 space-y-3 leading-relaxed text-muted-foreground">
               {paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
+            {example && <QueryRewriteExample />}
           </article>
         ))}
       </div>
-      <p className="reveal mt-8 max-w-4xl text-xl font-semibold leading-relaxed">
-        Traditional search evaluates signals to rank products. Cimulate learns to understand
-        shoppers and the products that fulfill their intent.
-      </p>
-      <div className="reveal mt-12 rounded-2xl border bg-secondary p-6 md:p-10">
-        <h3 className="text-3xl font-semibold md:text-4xl">Keep Shopify. Transform Search.</h3>
-        <div className="mt-5 max-w-3xl space-y-3 leading-relaxed text-muted-foreground">
-          <p>
-            Cimulate brings intent-led, AI-powered search to your existing Shopify storefront —
-            without requiring a move to Salesforce Commerce Cloud or a full platform migration.
-          </p>
-          <p>
-            Designed to integrate with your existing ecommerce experience, so you can modernize
-            product discovery without rebuilding your storefront.
-          </p>
-        </div>
-        <p className="mt-6 max-w-3xl text-lg font-semibold text-primary">
-          Keep the Shopify experience your customers know. Give it a smarter way to understand what
-          they’re shopping for.
+      <div className="reveal mt-8 rounded-2xl border bg-secondary p-6 md:p-8">
+        <h3 className="text-2xl font-semibold md:text-3xl">Keep Shopify. Upgrade Search.</h3>
+        <p className="mt-3 max-w-4xl leading-relaxed text-muted-foreground">
+          Cimulate integrates with American Girl’s existing Shopify storefront through APIs,
+          bringing intent-led product discovery to the shopping experience without requiring a move
+          to Salesforce Commerce Cloud or a full platform migration.
+        </p>
+        <p className="mt-4 font-semibold text-primary">
+          Keep the storefront your customers know. Upgrade the intelligence behind search.
         </p>
       </div>
     </section>
