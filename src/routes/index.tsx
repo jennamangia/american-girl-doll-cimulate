@@ -9,7 +9,7 @@ import {
   Closing,
   useReveal,
 } from "@/components/microsite/Sections";
-import { Shopify, Understanding } from "@/components/microsite/Understanding";
+import { Understanding } from "@/components/microsite/Understanding";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "An executive concept showing how Cimulate, now part of Salesforce, could transform product discovery for American Girl.",
+          "An executive concept showing how Cimulate, a Salesforce company, could transform product discovery for American Girl.",
       },
       { property: "og:title", content: "American Girl × Cimulate" },
       {
@@ -42,7 +42,6 @@ function Index() {
       <Reimagined active={active} setActive={setActive} />
       <Understanding />
       <Proof />
-      <Shopify />
       <Business />
       <Closing />
     </main>

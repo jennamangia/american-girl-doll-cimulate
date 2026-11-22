@@ -138,9 +138,9 @@ export function Hero({ setActive }: { setActive: (index: number) => void }) {
       <Cloud className="pointer-events-none absolute -bottom-10 right-1/3 w-96 text-primary/20" />
       <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-6 py-24 lg:grid-cols-[1.25fr_1fr]">
         <div className="relative z-10">
-          <span className="inline-flex items-center gap-2 rounded-full border border-sky/30 bg-navy/40 px-4 py-1.5 text-xs font-bold uppercase text-sky">
-            <Cloud className="w-5" /> Cimulate{" "}
-            <span className="font-medium normal-case">Now part of Salesforce</span>
+          <span className="inline-flex items-center gap-2 rounded-full border border-sky/30 bg-navy/40 px-4 py-1.5 text-xs font-bold text-sky">
+            <Cloud className="w-5" /> Cimulate <span aria-hidden="true">|</span>
+            <span className="font-medium">A Salesforce Company</span>
           </span>
           <h1 className="mt-6 text-5xl font-semibold leading-[1.04] md:text-7xl">
             What if American Girl understood every shopper’s{" "}
@@ -534,7 +534,7 @@ export function Proof() {
 /* 7 — Close */
 export function Closing() {
   return (
-    <section className="relative overflow-hidden bg-close py-28 text-navy-foreground md:py-36">
+    <section className="relative overflow-hidden bg-navy py-28 text-navy-foreground md:py-36">
       <Cloud className="pointer-events-none absolute -left-20 bottom-0 w-96 text-primary/25" />
       <Cloud className="pointer-events-none absolute right-0 top-10 w-64 text-sky/10" />
       <div className="reveal relative mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-[1fr_260px]">
@@ -551,7 +551,7 @@ export function Closing() {
             Let your shoppers dream it. Let Cimulate help them find it.
           </p>
           <p className="mt-10 text-sm font-semibold text-navy-muted">
-            Cimulate <span aria-hidden="true">|</span> Now part of Salesforce
+            Cimulate <span aria-hidden="true">|</span> A Salesforce Company
           </p>
         </div>
         <div className="relative mx-auto w-56 md:w-64">
