@@ -66,7 +66,7 @@ export function KitOutfitCarousel() {
         id="kit-outfits"
         ref={track}
         aria-labelledby="kit-outfits-heading"
-        className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2"
+        className="flex w-full min-w-0 snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2"
         onScroll={(event) => {
           const { scrollLeft, scrollWidth, clientWidth } = event.currentTarget;
           setEdges({ start: scrollLeft <= 1, end: scrollLeft + clientWidth >= scrollWidth - 1 });

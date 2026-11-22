@@ -109,7 +109,7 @@ export function ShopperAgent() {
             Captured product page with a scripted Shopper Agent demonstration
           </span>
         </figcaption>
-        <div className="grid items-start lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="grid grid-cols-1 items-start lg:grid-cols-[minmax(0,1fr)_22rem]">
           <div>
             <img
               src={kitPdp}
@@ -129,7 +129,7 @@ export function ShopperAgent() {
               </button>
             </div>
           </div>
-          <div className="self-stretch border-t bg-[#f8eee7] p-4 lg:border-l lg:border-t-0">
+          <div className="min-w-0 self-stretch border-t bg-[#f8eee7] p-4 lg:border-l lg:border-t-0">
             <div
               id="kit-conversation"
               hidden={!open}
