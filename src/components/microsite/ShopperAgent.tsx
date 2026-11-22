@@ -1,36 +1,73 @@
-import { useRef, useState } from "react";
-import { MessageCircle, X, ZoomIn } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, MessageCircle, RotateCcw, X, ZoomIn } from "lucide-react";
 import { Lightbox } from "./Sections";
 
 const kitPdp = "/images/american-girl/kit-product-page.webp";
 const kitAlt =
   "American Girl’s Kit Kittredge product page showing the doll, book and accessories, $175 price, ratings, availability, and purchase button.";
 
-const followUps = [
+const conversation = [
+  {
+    question: "I'm shopping for my 8-year-old niece. Would Kit be a good first doll?",
+    answer:
+      "Kit is recommended for ages 8 and up, so she’s a good option for your niece. Her story follows a girl growing up during the Great Depression. Your niece can read about Kit and then imagine adventures of her own.",
+  },
   {
     question: "What comes with Kit?",
     answer:
-      "This set includes the 18-inch Kit doll, the Meet Kit paperback, and accessories including her crocheted hat, compass necklace, and embroidered purse.",
+      "The set includes the 18-inch Kit doll in her signature outfit, the Meet Kit paperback, and accessories including her crocheted hat, compass necklace, and embroidered purse.",
   },
   {
-    question: "Explore compatible outfits",
+    question: "Could she dress Kit in other outfits?",
     answer:
-      "Kit is an 18-inch American Girl doll. When browsing outfits, look for listings that specify they fit 18-inch American Girl dolls.",
+      "Yes. Look for outfits or play accessories labeled for 18-inch American Girl dolls. She could keep Kit’s signature outfit for scenes from the book and change her clothes for stories she makes up.",
   },
   {
-    question: "Compare other dolls",
+    question: "How does Kit compare with other historical dolls?",
     answer:
-      "Kit’s story is set in 1934. When comparing historical character dolls, consider the recommended age, the story that interests your niece, and what comes with each set.",
+      "Kit’s story takes place during the Great Depression. Molly’s is set on the home front during World War II, and Samantha’s begins in 1904. Think about which story your niece would be most excited to read and act out.",
+  },
+  {
+    question: "What would you choose for her first doll?",
+    answer:
+      "I’d start with Kit if your niece likes reading and making up stories. The book gives you something to read together, and the outfit and accessories are enough to start playing right away.",
   },
 ];
 
+function ChatBubble({ speaker, text }: { speaker: "Shopper" | "Shopper Agent"; text: string }) {
+  const shopper = speaker === "Shopper";
+
+  return (
+    <p
+      className={`w-fit max-w-[92%] rounded-2xl p-3 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-1 motion-safe:duration-300 ${
+        shopper ? "ml-auto rounded-tr-sm bg-[#fbe8ef]" : "rounded-tl-sm bg-[#f8eee7]"
+      }`}
+    >
+      <span className="sr-only">{speaker}: </span>
+      {text}
+    </p>
+  );
+}
+
 export function ShopperAgent() {
   const [open, setOpen] = useState(true);
-  const [selected, setSelected] = useState<number | null>(null);
+  const [visibleTurns, setVisibleTurns] = useState(1);
   const [zoom, setZoom] = useState(false);
   const launcher = useRef<HTMLButtonElement>(null);
   const close = useRef<HTMLButtonElement>(null);
-  const followUp = selected === null ? null : followUps[selected];
+  const transcript = useRef<HTMLDivElement>(null);
+  const nextTurn = conversation[visibleTurns];
+
+  useEffect(() => {
+    const log = transcript.current;
+    if (!log) return;
+
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    log.scrollTo?.({
+      top: visibleTurns === 1 ? 0 : log.scrollHeight,
+      behavior: visibleTurns === 1 || reduceMotion ? "instant" : "smooth",
+    });
+  }, [visibleTurns]);
 
   return (
     <section id="shopper-agent" className="mx-auto max-w-7xl px-6 py-24">
@@ -49,7 +86,7 @@ export function ShopperAgent() {
         <figcaption className="border-b bg-secondary px-4 py-3 text-sm font-semibold text-primary sm:px-6">
           Illustrative Shopper Agent experience
           <span className="mt-1 block text-xs font-medium text-muted-foreground sm:ml-3 sm:mt-0 sm:inline">
-            Captured product page with a scripted conversation
+            Captured product page with a scripted Shopper Agent demonstration
           </span>
         </figcaption>
         <div className="grid items-start lg:grid-cols-[minmax(0,1fr)_22rem]">
@@ -97,49 +134,42 @@ export function ShopperAgent() {
                   <X className="size-4" aria-hidden="true" />
                 </button>
               </header>
-              <div className="space-y-3 p-4 text-sm leading-relaxed">
-                <p className="ml-5 rounded-2xl rounded-tr-sm bg-[#fbe8ef] p-3">
-                  <span className="sr-only">Shopper: </span>
-                  I’m buying for my 8-year-old niece. Would Kit be a good first doll?
+              <div
+                id="kit-transcript"
+                ref={transcript}
+                role="log"
+                aria-label="Kit conversation history"
+                aria-relevant="additions"
+                tabIndex={0}
+                className="h-[22rem] space-y-3 overflow-y-auto overscroll-contain px-4 py-4 text-sm leading-relaxed [scrollbar-gutter:stable] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#a40f45] lg:h-[30rem]"
+              >
+                {conversation.slice(0, visibleTurns).map(({ question, answer }) => (
+                  <div key={question} className="space-y-3">
+                    <ChatBubble speaker="Shopper" text={question} />
+                    <ChatBubble speaker="Shopper Agent" text={answer} />
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-[#e6d4d8] px-4 py-3">
+                <p className="mb-2 text-xs font-semibold text-[#61434f]" id="kit-prompt-label">
+                  {nextTurn ? "Suggested follow-up" : "Conversation complete"}
                 </p>
-                <p className="mr-3 rounded-2xl rounded-tl-sm bg-[#f8eee7] p-3">
-                  <span className="sr-only">Shopper Agent: </span>
-                  Kit could be a wonderful first doll! She’s part of American Girl’s historical
-                  character collection, and her stories take place during the Great Depression. This
-                  set includes her doll, book, and accessories, making it a fun way to explore her
-                  world through reading and imaginative play.
-                </p>
-                <div aria-live="polite" className="space-y-2">
-                  {followUp && (
-                    <>
-                      <p className="ml-5 rounded-2xl rounded-tr-sm bg-[#fbe8ef] p-3">
-                        <span className="sr-only">Shopper: </span>
-                        {followUp.question}
-                      </p>
-                      <p className="mr-3 rounded-2xl rounded-tl-sm bg-[#f8eee7] p-3">
-                        <span className="sr-only">Shopper Agent: </span>
-                        {followUp.answer}
-                      </p>
-                    </>
-                  )}
-                </div>
-                <div
-                  className="flex flex-wrap gap-2"
-                  role="group"
-                  aria-label="Suggested follow-up questions"
+                <button
+                  type="button"
+                  onClick={() =>
+                    setVisibleTurns((turns) => (turns < conversation.length ? turns + 1 : 1))
+                  }
+                  aria-describedby="kit-prompt-label"
+                  aria-controls="kit-transcript"
+                  className="inline-flex min-h-10 max-w-full items-center gap-2 rounded-xl border border-[#a40f45]/30 px-3 py-2 text-left text-xs font-semibold text-[#a40f45] hover:bg-[#fbe8ef] focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
-                  {followUps.map(({ question }, index) => (
-                    <button
-                      key={question}
-                      type="button"
-                      aria-pressed={selected === index}
-                      onClick={() => setSelected(index)}
-                      className="rounded-full border border-[#a40f45]/30 px-3 py-1.5 text-left text-xs font-semibold text-[#a40f45] hover:bg-[#fbe8ef] focus-visible:outline-2 focus-visible:outline-offset-2 aria-pressed:bg-[#a40f45] aria-pressed:text-white"
-                    >
-                      {question}
-                    </button>
-                  ))}
-                </div>
+                  {nextTurn ? nextTurn.question : "Replay conversation"}
+                  {nextTurn ? (
+                    <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
+                  ) : (
+                    <RotateCcw className="size-4 shrink-0" aria-hidden="true" />
+                  )}
+                </button>
               </div>
             </div>
             {!open && (

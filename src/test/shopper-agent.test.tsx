@@ -3,28 +3,46 @@ import { describe, expect, it } from "vitest";
 import { ShopperAgent } from "@/components/microsite/ShopperAgent";
 
 describe("Illustrative Kit Shopper Agent", () => {
-  it("opens and closes alongside the product page and answers each suggested question", () => {
+  it("appends each turn in order and preserves the transcript when closed and reopened", () => {
     render(<ShopperAgent />);
+    const history = screen.getByRole("log", { name: "Kit conversation history" });
+    const firstQuestion = "I'm shopping for my 8-year-old niece. Would Kit be a good first doll?";
+    expect(within(history).getByText(firstQuestion)).toBeVisible();
 
-    fireEvent.click(screen.getByRole("button", { name: "Close Shopper Agent" }));
-    expect(screen.queryByRole("group", { name: "Suggested follow-up questions" })).toBeNull();
-    expect(screen.getByRole("img", { name: /Kit Kittredge product page/ })).toBeVisible();
-
-    fireEvent.click(screen.getByRole("button", { name: "Ask about Kit" }));
-    const suggested = screen.getByRole("group", { name: "Suggested follow-up questions" });
     const examples = [
       ["What comes with Kit?", /embroidered purse/],
-      ["Explore compatible outfits", /listings that specify they fit/],
-      ["Compare other dolls", /story is set in 1934/],
+      ["Could she dress Kit in other outfits?", /labeled for 18-inch American Girl dolls/],
+      ["How does Kit compare with other historical dolls?", /home front during World War II/],
+      ["What would you choose for her first doll?", /I’d start with Kit/],
     ] as const;
 
     for (const [question, answer] of examples) {
-      const button = within(suggested).getByRole("button", { name: question });
-      fireEvent.click(button);
-      expect(button).toHaveAttribute("aria-pressed", "true");
-      expect(screen.getByText(answer)).toBeVisible();
+      fireEvent.click(screen.getByRole("button", { name: question }));
+      expect(within(history).getByText(answer)).toBeVisible();
     }
-    expect(screen.queryByText(/embroidered purse/)).toBeNull();
+
+    const messages = Array.from(history.querySelectorAll("p"), (message) => message.textContent);
+    expect(messages).toHaveLength(10);
+    expect(messages.filter((_, index) => index % 2 === 0)).toEqual(
+      [firstQuestion, ...examples.map(([question]) => question)].map(
+        (question) => `Shopper: ${question}`,
+      ),
+    );
+    expect(within(history).getByText(/embroidered purse/)).toBeVisible();
+
+    fireEvent.click(screen.getByRole("button", { name: "Close Shopper Agent" }));
+    expect(screen.queryByRole("log")).toBeNull();
+    expect(screen.getByRole("img", { name: /Kit Kittredge product page/ })).toBeVisible();
+
+    fireEvent.click(screen.getByRole("button", { name: "Ask about Kit" }));
+    expect(screen.getByRole("log")).toBe(history);
+    expect(within(history).getByText(/I’d start with Kit/)).toBeVisible();
+
+    fireEvent.click(screen.getByRole("button", { name: "Replay conversation" }));
+    expect(within(history).getByText(firstQuestion)).toBeVisible();
+    expect(within(history).getByText(/recommended for ages 8 and up/)).toBeVisible();
+    expect(within(history).queryByText(/I’d start with Kit/)).toBeNull();
+    expect(screen.getByRole("button", { name: "What comes with Kit?" })).toBeVisible();
   });
 
   it("enlarges the product-page screenshot and closes on Escape", () => {
