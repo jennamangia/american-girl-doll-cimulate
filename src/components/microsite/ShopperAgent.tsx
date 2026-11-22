@@ -32,6 +32,8 @@ const exchanges = [
 ];
 
 const openingPause = 600;
+const autoplayDelay = 1000;
+const visibilityThreshold = 0.5;
 const messages = exchanges
   .flatMap(({ question, answer, outfits }) => [
     { speaker: "Shopper" as const, text: question, pause: 1800 },
@@ -64,20 +66,64 @@ export function ShopperAgent() {
   const [visibleMessages, setVisibleMessages] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [zoom, setZoom] = useState(false);
+  const [inView, setInView] = useState<boolean | null>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const started = useRef(false);
+  const remainingPause = useRef<number | null>(null);
   const launcher = useRef<HTMLButtonElement>(null);
   const close = useRef<HTMLButtonElement>(null);
   const transcript = useRef<HTMLDivElement>(null);
   const following = useRef(true);
   const lastTop = useRef(0);
   const complete = visibleMessages === messages.length;
-  const typing = open && playing && !zoom && messages[visibleMessages - 1]?.speaker === "Shopper";
+  const active = open && playing && inView !== false && !zoom && !complete;
+  const typing = active && messages[visibleMessages - 1]?.speaker === "Shopper";
 
   useEffect(() => {
-    if (!open || !playing || zoom || complete) return;
-    const delay = messages[visibleMessages - 1]?.pause ?? openingPause;
-    const timer = window.setTimeout(() => setVisibleMessages((count) => count + 1), delay);
+    const demo = panel.current;
+    if (!demo || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries.at(-1);
+        if (entry)
+          setInView(entry.isIntersecting && entry.intersectionRatio >= visibilityThreshold);
+      },
+      { threshold: visibilityThreshold },
+    );
+    observer.observe(demo);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView || !open || zoom || started.current) return;
+    const motion = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    if (motion?.matches) return;
+
+    const timer = window.setTimeout(() => {
+      if (started.current || motion?.matches) return;
+      started.current = true;
+      setVisibleMessages(1);
+      setPlaying(true);
+    }, autoplayDelay);
     return () => window.clearTimeout(timer);
-  }, [visibleMessages, open, playing, zoom, complete]);
+  }, [inView, open, zoom]);
+
+  useEffect(() => {
+    if (!active) return;
+    const delay = remainingPause.current ?? messages[visibleMessages - 1]?.pause ?? openingPause;
+    const deadline = Date.now() + delay;
+    let fired = false;
+    const timer = window.setTimeout(() => {
+      fired = true;
+      remainingPause.current = null;
+      setVisibleMessages((count) => count + 1);
+    }, delay);
+    return () => {
+      window.clearTimeout(timer);
+      if (!fired) remainingPause.current = Math.max(0, deadline - Date.now());
+    };
+  }, [visibleMessages, active]);
 
   useEffect(() => {
     const log = transcript.current;
@@ -132,6 +178,7 @@ export function ShopperAgent() {
           <div className="min-w-0 self-stretch border-t bg-[#f8eee7] p-4 lg:border-l lg:border-t-0">
             <div
               id="kit-conversation"
+              ref={panel}
               hidden={!open}
               className="overflow-hidden rounded-2xl border border-[#e6d4d8] bg-white text-[#321b26] shadow-soft"
             >
@@ -201,6 +248,7 @@ export function ShopperAgent() {
                 <button
                   type="button"
                   onClick={() => {
+                    started.current = true;
                     if (complete) {
                       following.current = true;
                       lastTop.current = 0;
@@ -239,7 +287,10 @@ export function ShopperAgent() {
                 aria-controls="kit-conversation"
                 onClick={() => {
                   setOpen(true);
-                  if (!visibleMessages) setPlaying(true);
+                  if (!started.current) {
+                    started.current = true;
+                    setPlaying(true);
+                  }
                   requestAnimationFrame(() => close.current?.focus());
                 }}
                 className="ml-auto flex items-center gap-2 rounded-full bg-[#a40f45] px-4 py-3 text-sm font-semibold text-white hover:bg-[#861039] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a40f45]"
